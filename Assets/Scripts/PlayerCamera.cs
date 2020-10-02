@@ -12,7 +12,10 @@ public class PlayerCamera : MonoBehaviour
     float Coeff;
     Vector3 playerPos;
     Quaternion playerRotation;
-    void Update()
+    /// <summary>
+    /// Удалить за ненадобностью
+    /// </summary>
+    void update()
     {
         if (playerPos != playerTransform.position || playerRotation != playerTransform.rotation)
         {

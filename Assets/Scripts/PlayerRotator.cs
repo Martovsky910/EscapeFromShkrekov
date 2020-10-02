@@ -15,14 +15,23 @@ public class PlayerRotator
         this.playerTransform = playerTransform;
         this.rb = rb;
         Input.PlayerMovedMouse += OnMouseMove;
+        Input.InventoryModeChangedTo += OnInventoryOpenClose;
     }
     void OnMouseMove(float diff)
     {
         float newAngle = playerTransform.eulerAngles.z - diff * coeff;
         //Debug.Log($"diff {diff} curr rotation {playerTransform.eulerAngles.z} newAngle {newAngle}");
         rb.MoveRotation(newAngle);
-       
     }
+
+    void OnInventoryOpenClose(bool opened)
+    {
+        if (opened)
+            Input.PlayerMovedMouse -= OnMouseMove;
+        else
+            Input.PlayerMovedMouse += OnMouseMove;
+    }
+    #region старые варианты
     //вращение через *=
     //float newAngle = diff * coeff;
     //if (newAngle > maxAngle)
@@ -41,4 +50,5 @@ public class PlayerRotator
     //    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     //    transform.eulerAngles = new Vector3(0, 0, angle);
     //}
+    #endregion
 }

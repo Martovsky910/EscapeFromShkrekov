@@ -3,11 +3,13 @@
 public class ItemOnGround : MonoBehaviour, Interactable
 {
     [SerializeField]
-    ItemTemplate item;
-    public ItemTemplate Item => item;
+    ItemTemplate template;
+    Item item;
+    public Item Item => item;
     void Awake()
     {
-        GetComponent<SpriteRenderer>().sprite = item.Sprite;
+        GetComponent<SpriteRenderer>().sprite = template.Sprite;
+        item = new Item(template);
     }
     public void OnInteraction(Player player)
     {

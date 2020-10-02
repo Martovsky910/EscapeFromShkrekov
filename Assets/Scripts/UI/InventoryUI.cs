@@ -12,16 +12,21 @@ public class InventoryUI : MonoBehaviour
     void Awake()
     {
         ItemsOnPlayer.PlayerInventory.InventoryChanged += OnInventoryChanged;
+        Input.InventoryModeChangedTo += OnInventoryOpenClose;
+        gameObject.SetActive(false);
     }
-
+    void OnInventoryOpenClose(bool status)
+    {
+        gameObject.SetActive(status);
+    }
     void OnInventoryChanged()
     {
         buttons.ForEach(b => Destroy(b));
         buttons = new List<GameObject>();
-        foreach (var item in ItemsOnPlayer.PlayerInventory.Items)
+        foreach (Item item in ItemsOnPlayer.PlayerInventory.Items)
         {
             var button = Instantiate(buttonPrefab, transform);
-            button.GetComponent<InventoryButton>().Initialize(item);
+            button.GetComponent<InventoryButton>().Initialize(item, ItemsOnPlayer.PlayerInventory);
             buttons.Add(button);
         }
     }

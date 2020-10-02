@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2b421e1ac83534d82f692b34ee3525, type: 3}
   m_Name: Duct tape
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  amountOfSlotsOccuoied: 0
-  itemName: 
+  sprite: {fileID: 21300000, guid: bf74391767b4c3347981c96135a66431, type: 3}
+  amountOfSlotsOccuoied: 1
+  itemName: "\u0421\u043A\u043E\u0442\u0447"

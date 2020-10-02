@@ -1,33 +1,43 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 /// <summary>
 /// взаимодействие с объектами
 /// </summary>
-public class PlayerInteractor
+public class PlayerInteractor : MonoBehaviour
 {
+    [SerializeField]
     Player owner;
-    const float maxInteractionDistance = 1.1f;
-    public PlayerInteractor(Player owner)
+    [SerializeField]
+    float maxDistance;
+    public static Action<Interactable> PlayerCanInteract;
+    void Awake()
     {
-        this.owner = owner;
         Input.PlayerInteracted += OnPlayerInteract;
+    }
+    void Update()
+    {
+        Interactable item = getFirstInteractable();
+        PlayerCanInteract?.Invoke(item);
     }
     void OnPlayerInteract()
     {
-        var mouseInWorld = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
-        if (Vector2.Distance(mouseInWorld, owner.PlayerPosition) > maxInteractionDistance)
+        Interactable item = getFirstInteractable();
+        if (item != null)
         {
-            Debug.Log("Слишком далеко");
-            return;
+            item.OnInteraction(owner);
         }
-        var hitInfo = Physics2D.RaycastAll(mouseInWorld, Vector3.zero);
-        foreach (var hit in hitInfo)
+    }
+    Interactable getFirstInteractable()
+    {
+        RaycastHit2D[] result = Physics2D.BoxCastAll(transform.position, new Vector2(1f, 1f), 0, transform.up, maxDistance);
+        foreach (var hit in result)
         {
             Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
             if (interactable != null)
             {
-                //Debug.Log("попал рейкастом");
-                interactable.OnInteraction(owner);
+                return interactable;
             }
         }
+        return null;
     }
 }

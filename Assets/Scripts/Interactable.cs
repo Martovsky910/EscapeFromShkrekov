@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface Interactable
+﻿public interface Interactable
 {
+    Item Item { get; }
     void OnInteraction(Player player);
 }

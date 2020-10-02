@@ -6,11 +6,13 @@ public class Input : MonoBehaviour
 {
     [SerializeField]
     Camera mainCamera;
+    bool inventoryOpened = false;
     public static event Action<Vector2> MoveClicked;
     public static event Action PlayerShoot;
     public static event Action PlayerInteracted;
     public static event Action<Vector3> PlayerMovedMouseInWorld;
     public static event Action<float> PlayerMovedMouse;
+    public static event Action<bool> InventoryModeChangedTo;
     Vector3 mousePos;
     void Update()
     {
@@ -32,7 +34,7 @@ public class Input : MonoBehaviour
             {
                 PlayerShoot?.Invoke();
             }
-            if (UnityEngine.Input.GetMouseButtonDown(1))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.E))
             {
                 PlayerInteracted?.Invoke();
             }
@@ -51,5 +53,11 @@ public class Input : MonoBehaviour
         //}
         //mousePos = currentMousePos;
         #endregion
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventoryOpened = !inventoryOpened;
+            InventoryModeChangedTo?.Invoke(inventoryOpened);
+        }
     }
 }

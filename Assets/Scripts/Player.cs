@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     public Vector3 PlayerPosition => gameObject.transform.position;
     void Awake()
     {
-        playerInteractor = new PlayerInteractor(this);
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         playerMover = new PlayerMover(rb, forceMultiply);
         playerMover.ListenToInput();
