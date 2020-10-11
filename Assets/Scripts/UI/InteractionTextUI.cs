@@ -13,7 +13,7 @@ public class InteractionTextUI : MonoBehaviour
     private void OnPlayerCanInteract(Interactable interactable)
     {
         if (interactable != null)
-            text.text = $"Нажми 'E' для взаимодействия с {interactable.Item.ItemTemplate.ItemName}";
+            text.text = interactable.InteractionText;
         else
             text.text = "";
     }

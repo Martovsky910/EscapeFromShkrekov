@@ -1,18 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UsableItem : MonoBehaviour
+﻿public abstract class UsableItem : Item
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool ConsumedOnUse { get; private set; }
+    public UsableItem(UsableItemTemplate template) : base(template) 
     {
-        
+        ConsumedOnUse = template.ConsumedOnUse;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract void Use();
 }

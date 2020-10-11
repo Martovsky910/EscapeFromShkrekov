@@ -1,5 +1,6 @@
 ﻿public interface Interactable
 {
     Item Item { get; }
-    void OnInteraction(Player player);
+    void OnInteraction();
+    string InteractionText { get; }
 }

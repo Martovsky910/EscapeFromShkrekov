@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 [Serializable]
 public class Item
 {
     public ItemTemplate ItemTemplate { get; private set; }
-    public int Amount { get; private set; } = 1;
+    public int StacksAmount { get; private set; }
     public Item(ItemTemplate template)
     {
         ItemTemplate = template;
+    }
+    public void ChangeAmount(int howMuch)
+    {
+        StacksAmount += howMuch;
     }
 }
