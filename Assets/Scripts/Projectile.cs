@@ -8,10 +8,12 @@ public class Projectile : MonoBehaviour
     Coroutine moveRoutine;
     BoxCollider2D collider;
     GameObject caster;
-    public void Initialize(float speed, GameObject caster)
+    HitData hitData;
+    public void Initialize(float speed, GameObject caster, HitData hitData)
     {
         this.speed = speed;
         this.caster = caster;
+        this.hitData = hitData;
         collider = GetComponent<BoxCollider2D>();
         moveRoutine = StartCoroutine(move());
     }
@@ -23,7 +25,12 @@ public class Projectile : MonoBehaviour
             if (collider.Cast(Vector2.zero, result) > 0 && result[0].collider.gameObject != caster)
             {
                 Debug.Log("Врезался в " + result[0].collider.gameObject.name);
-                destroyBullet();
+                Damageble damageble = result[0].collider.gameObject.GetComponent<Damageble>();
+                if (damageble != null)
+                {
+                    damageble.TakeHit(hitData);
+                }
+                    destroyBullet();
             }
             else
             {

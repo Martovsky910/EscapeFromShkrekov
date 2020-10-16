@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,12 +8,14 @@ public class Input : MonoBehaviour
     [SerializeField]
     Camera mainCamera;
     bool inventoryOpened = false;
+    bool ingamePresetMenuOpened = false;
     public static event Action<Vector2> MoveClicked;
     public static event Action PlayerShoot;
     public static event Action PlayerInteracted;
     public static event Action<Vector3> PlayerMovedMouseInWorld;
     public static event Action<float> PlayerMovedMouse;
     public static event Action<bool> InventoryModeChangedTo;
+    public static event Action<bool> IngamePreserMenuClick;
     Vector3 mousePos;
     void Update()
     {
@@ -58,6 +61,11 @@ public class Input : MonoBehaviour
         {
             inventoryOpened = !inventoryOpened;
             InventoryModeChangedTo?.Invoke(inventoryOpened);
+        }
+        if (UnityEngine.Input.GetKeyDown(KeyCode.P))
+        {
+            ingamePresetMenuOpened = !ingamePresetMenuOpened;
+            IngamePreserMenuClick?.Invoke(ingamePresetMenuOpened);
         }
     }
 }

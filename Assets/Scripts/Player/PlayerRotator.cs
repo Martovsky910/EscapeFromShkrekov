@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.PlayerLoop;
+﻿using UnityEngine;
 
 public class PlayerRotator
 {
@@ -14,14 +10,23 @@ public class PlayerRotator
         rb = Player.GO.GetComponent<Rigidbody2D>();
         Input.PlayerMovedMouse += OnMouseMove;
         Input.InventoryModeChangedTo += OnInventoryOpenClose;
+        Input.IngamePreserMenuClick += OnIngamePresetChanged;
     }
+
+
     void OnMouseMove(float diff)
     {
         float newAngle = playerTransform.eulerAngles.z - diff * Player.Properties.Coeff;
         //Debug.Log($"diff {diff} curr rotation {playerTransform.eulerAngles.z} newAngle {newAngle}");
         rb.MoveRotation(newAngle);
     }
-
+    void OnIngamePresetChanged(bool opened)
+    {
+        if (opened)
+            Input.PlayerMovedMouse -= OnMouseMove;
+        else
+            Input.PlayerMovedMouse += OnMouseMove;
+    }
     void OnInventoryOpenClose(bool opened)
     {
         if (opened)
@@ -29,6 +34,8 @@ public class PlayerRotator
         else
             Input.PlayerMovedMouse += OnMouseMove;
     }
+
+
     #region старые варианты
     //вращение через *=
     //float newAngle = diff * coeff;

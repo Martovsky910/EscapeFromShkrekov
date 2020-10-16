@@ -18,4 +18,8 @@ public static class InGameSettings
     {
         FogOfWarEnabled = preset.FogOfWarEnabled;
     }
+    public static void ChangeFogOfWar(bool value)
+    {
+        FogOfWarEnabled = value;
+    }
 }

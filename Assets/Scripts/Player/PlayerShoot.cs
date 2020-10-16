@@ -16,6 +16,6 @@ public class PlayerShoot : MonoBehaviour
     void onShootPressed()
     {
         var projGO = Instantiate(projectile.gameObject, gameObject.transform.position, gameObject.transform.rotation);
-        projGO.GetComponent<Projectile>().Initialize(speed, gameObject);
+        projGO.GetComponent<Projectile>().Initialize(speed, gameObject, new HitData(25));
     }
 }
