@@ -1,22 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeCreator : MonoBehaviour
+public class NodeCreator
 {
-    [SerializeField] Vector2 bottomLeftCorner;
-    [SerializeField] Vector2 topRightCorner;
-    [SerializeField] float cellSize;
-    [SerializeField] LayerMask mask;
-    [SerializeField] Transform EndNodePos;
-    Node[,] map;
-    void Awake()
+    static NodeCreatorSettings settings;
+    public static Node[,] Map { get; private set; }
+    public static void Initialize(NodeCreatorSettings setting)
     {
-        map = CreateNodes();
+        settings = setting;
+        Map = CreateNodes();
     }
 
-    public Node[,] CreateNodes()
+    static Node[,] CreateNodes()
     {
-        Vector2 currentPos = bottomLeftCorner;
+        Vector2 currentPos;
         List<Node> result = new List<Node>();
         Vector2Int totalAmount = GetRaycastAmount();
         int x = 0;
@@ -25,18 +22,18 @@ public class NodeCreator : MonoBehaviour
         {
             while (y < totalAmount.y)
             {
-                currentPos = bottomLeftCorner + new Vector2(x * cellSize, y * cellSize);
+                currentPos = settings.bottomLeftCorner + new Vector2(x * settings.cellSize, y * settings.cellSize);
                 //Debug.Log($"currentPos [{currentPos}] x y [{x},{y}]");
-                RaycastHit2D hit = Physics2D.BoxCast(currentPos, new Vector2(cellSize, cellSize),
-                    0, Vector2.zero, Mathf.Infinity, mask);
+                RaycastHit2D hit = Physics2D.BoxCast(currentPos, new Vector2(settings.cellSize, settings.cellSize),
+                    0, Vector2.zero, Mathf.Infinity, settings.mask);
                 if (hit.collider == null)
                 {
-                    Debug.DrawLine(currentPos, currentPos + Vector2.up * 0.2f, Color.green, 100f);
+                    //VisualDebug.DrawCross(currentPos, settings.cellSize * 0.5f, Color.green, 100f);
                     result.Add(new Node(new Vector2Int(x, y), currentPos));
                 }
                 else
                 {
-                    Debug.DrawLine(currentPos, currentPos + Vector2.up * 0.2f, Color.red, 100f);
+                    //VisualDebug.DrawCross(currentPos, settings.cellSize * 0.5f, Color.red, 100f);
                 }
                 y++;
             }
@@ -50,35 +47,16 @@ public class NodeCreator : MonoBehaviour
         }
         return resultArray;
     }
-    Vector2Int GetRaycastAmount()
+    static Vector2Int GetRaycastAmount()
     {
-        Vector2 diff = new Vector2((topRightCorner.x - bottomLeftCorner.x) / cellSize,
-            (topRightCorner.y - bottomLeftCorner.y) / cellSize);
+        Vector2 diff = new Vector2((settings.topRightCorner.x - settings.bottomLeftCorner.x) / settings.cellSize,
+            (settings.topRightCorner.y - settings.bottomLeftCorner.y) / settings.cellSize);
         return new Vector2Int((int)diff.x + 1, (int)diff.y + 1);
     }
-    void Update()
+    public static Vector2Int GetArrayPosByWorldPos(Vector2 worldPos)
     {
-        if (UnityEngine.Input.GetMouseButtonDown(1))
-        {
-            Vector3 objPos = EndNodePos.position;
-            Vector2Int xy = GetXYByWorldPos(objPos);
-            Debug.Log(objPos + " " + xy);
-            Pathfinding p = new Pathfinding(map);
-            List<Node> path = p.FindPath(new Vector2Int(0, 0), xy);
-            if (path == null)
-                Debug.Log("path null");
-            else
-                foreach (Node n in path)
-                {
-                    Debug.Log(n.RealWorldPos);
-                    Debug.DrawLine(n.RealWorldPos, n.RealWorldPos + Vector3.up * 0.2f, Color.blue, 4f);
-                }
-        }
-    }
-    Vector2Int GetXYByWorldPos(Vector2 worldPos)
-    {
-        Vector2 diff = new Vector2((worldPos.x - bottomLeftCorner.x) / cellSize,
-             (worldPos.y - bottomLeftCorner.y) / cellSize);
+        Vector2 diff = new Vector2((worldPos.x - settings.bottomLeftCorner.x) / settings.cellSize,
+             (worldPos.y - settings.bottomLeftCorner.y) / settings.cellSize);
         return new Vector2Int((int)diff.x, (int)diff.y);
     }
 }

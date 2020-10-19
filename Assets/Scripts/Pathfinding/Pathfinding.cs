@@ -6,18 +6,22 @@ public class Pathfinding
     Node[,] map;
     const int move_str_cost = 10;
     const int move_diag_cost = 14;
-    public Pathfinding(Node[,] map)
+    public Pathfinding()
     {
-        this.map = new Node[map.GetLength(0), map.GetLength(1)];
-        foreach (Node node in map)
+        this.map = new Node[NodeCreator.Map.GetLength(0), NodeCreator.Map.GetLength(1)];
+        foreach (Node node in NodeCreator.Map)
         {
             if (node != null)
                 this.map[node.Position.x, node.Position.y] = node.Clone();
         }
     }
-    public List<Node> FindPath(Vector3Int start, Vector3Int end)
+    public List<Node> FindPath(Vector3 start, Vector3 end)
     {
-        return FindPath((Vector2Int)start, (Vector2Int)end);
+        //позиции в map
+        Vector2Int startNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(start);
+        Vector2Int endNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(end);
+
+        return FindPath(startNodeArrayPos, endNodeArrayPos);
     }
     public List<Node> FindPath(Vector2Int start, Vector2Int end)
     {
@@ -80,7 +84,7 @@ public class Pathfinding
         }
         return lowest;
     }
-    List<Node> GetNeighbours(Node node, Node[,] map)
+    List<Node> GetNeighbours(Node node, Node[,] map)//TODO: везде стоит GetLenght(0)
     {
         List<Node> result = new List<Node>();
         if (node.Position.x - 1 >= 0)
@@ -105,6 +109,31 @@ public class Pathfinding
         if (node.Position.y + 1 < map.GetLength(0))
         {
             Node item = map[node.Position.x, node.Position.y + 1];
+            if (item != null)
+                result.Add(item);
+        }
+
+        if (node.Position.x - 1 >= 0 && node.Position.y + 1 < map.GetLength(0))
+        {
+            Node item = map[node.Position.x - 1, node.Position.y + 1];
+            if (item != null)
+                result.Add(item);
+        }
+        if (node.Position.x + 1 < map.GetLength(0) && node.Position.y + 1 < map.GetLength(0))
+        {
+            Node item = map[node.Position.x + 1, node.Position.y + 1];
+            if (item != null)
+                result.Add(item);
+        }
+        if (node.Position.x - 1 >= 0 && node.Position.y - 1 >= 0)
+        {
+            Node item = map[node.Position.x - 1, node.Position.y - 1];
+            if (item != null)
+                result.Add(item);
+        }
+        if (node.Position.x + 1 < map.GetLength(0) && node.Position.y - 1 >= 0)
+        {
+            Node item = map[node.Position.x + 1, node.Position.y - 1];
             if (item != null)
                 result.Add(item);
         }

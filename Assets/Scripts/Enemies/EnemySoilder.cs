@@ -1,25 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngineInternal;
 
 public class EnemySoilder : MonoBehaviour, Damageble
 {
     [SerializeField] int maxHealth;
     [SerializeField] LayerMask mask;
     [SerializeField] GameObject target;
+    [SerializeField] List<Waypoint> wayPoints;
+    [SerializeField] float MaxSpeed;
+    [SerializeField] bool debugShowPath;
+    FoVRaycaster raycaster;
     int currentHealth;
-    int rayCount = 100;
-    int fov = 100;
-    float viewDistance = 50f;
-    float angleIncrease;
-    void Awake()
+    Rigidbody2D rb;
+
+    Waypoint currentWaypoint;
+    List<Node> currentPath;
+    int currentNodeIndex = 0;
+    int currentWaypointIndex = 0;
+    void Start()
     {
-        angleIncrease = fov / rayCount;
+        showDebugPath();
+        rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
-        StartCoroutine(fieldofview());
+        raycaster = new FoVRaycaster(100, 100, 50, gameObject, mask);
+        //StartCoroutine(fieldofview());
+        if (wayPoints.Any())
+        {
+            currentWaypoint = wayPoints.First();
+        }
     }
     public void Initialize()
     {
@@ -31,56 +42,105 @@ public class EnemySoilder : MonoBehaviour, Damageble
         if (currentHealth < 0)
             Destroy(gameObject);
     }
-
+    void FixedUpdate()
+    {
+        updateMove();
+    }
     IEnumerator fieldofview()
     {
         while (true)
         {
-            Vector3 origin = transform.position;
-            float angle = SetAimDirection(-transform.right);
-            for (int i = 0; i <= rayCount; i++)
+            if (raycaster.Find(transform, Player.GO, true))
             {
-                RaycastHit2D[] hits = Physics2D.RaycastAll(origin, GetVectorFromAngle(angle), viewDistance, mask);
-                bool targetFound = false;
-                foreach (RaycastHit2D hit in hits)
-                {
-                    if (hit.collider.gameObject == gameObject)
-                        continue;
-                    Color c = Color.green;
-
-                    if (hit.collider.gameObject == target)
-                    {
-                        c = Color.red;
-                        //Debug.Log("нашел таргет");
-                    }
-
-                    Debug.DrawLine(origin, hit.point, c, 0.3f);
-                    targetFound = true;
-                    break;
-                }
-
-                if (!targetFound)
-                    Debug.DrawLine(origin, origin + GetVectorFromAngle(angle) * viewDistance, Color.green, 0.3f);
-                angle -= angleIncrease;
+                Vector3 direction = (Player.PlayerPosition - transform.position).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+                rb.MoveRotation(angle);
             }
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForEndOfFrame();
         }
+    }
 
-    }
-    Vector3 GetVectorFromAngle(float angle)
+    void updateMove()
     {
-        float angleRad = angle * (Mathf.PI / 180f);
-        return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+        if (currentPath == null)
+        {
+            Pathfinding p = new Pathfinding();
+            currentPath = p.FindPath(transform.position, currentWaypoint.Position);
+            if (currentPath == null)
+            {
+                Debug.Log("не смог найти путь");
+                return;
+            }
+            else
+                Debug.Log("получил путь длинной " + currentPath.Count);
+        }
+        //Debug.Log("иду к ноде " + currentNodeIndex);
+        // Debug.Log("Осталось пройти " + Vector3.Distance(transform.position, currentPath[currentNodeIndex].RealWorldPos));
+        if (Vector3.Distance(transform.position, currentPath[currentNodeIndex].RealWorldPos) > 0.1f)
+        {
+            Vector3 nextPos = Vector3.MoveTowards(transform.position, currentPath[currentNodeIndex].RealWorldPos, MaxSpeed);
+            rb.MovePosition(nextPos);
+        }
+        else
+        {
+            //Debug.Log("перехожу на следующую ноду");
+            if (currentNodeIndex + 1 < currentPath.Count)
+                currentNodeIndex++;
+            else
+            {
+                //Debug.Log("Перехожу на следующий вейпоинт");
+                currentNodeIndex = 0;
+                currentPath = null;
+                if (currentWaypointIndex + 1 < wayPoints.Count)
+                {
+                    currentWaypointIndex++;
+                }
+                else
+                    currentWaypointIndex = 0;
+                currentWaypoint = wayPoints[currentWaypointIndex];
+            }
+        }
     }
-    float SetAimDirection(Vector3 dir)
+
+
+    void showDebugPath()
     {
-        return GetAngleFromVector(dir) - fov / 2f;
+        if (wayPoints.Any() && debugShowPath)
+        {
+            Waypoint prev = null;
+            foreach (Waypoint waypoint in wayPoints)
+            {
+                VisualDebug.DrawCross(waypoint.Position, 0.5f, Color.green, 1000f);
+                if (prev != null)
+                {
+                    Pathfinding p = new Pathfinding();
+                    List<Node> path = p.FindPath(prev.Position, waypoint.Position);
+                    Node prevNode = null;
+                    foreach (Node node in path)
+                    {
+                        VisualDebug.DrawCross(node.RealWorldPos, 0.5f, Color.red, 1000f);
+                        //if (prevNode != null)
+                        //    Debug.DrawLine(prevNode.RealWorldPos, node.RealWorldPos, Color.magenta, 1000f);
+                        prevNode = node;
+                    }
+                }
+                prev = waypoint;
+            }
+
+            Pathfinding p2 = new Pathfinding();
+            List<Node> backToStartPath = p2.FindPath(wayPoints.Last().Position, wayPoints.First().Position);
+            Node prevNodeBackToStart = null;
+            foreach (Node node in backToStartPath)
+            {
+                VisualDebug.DrawCross(node.RealWorldPos, 0.5f, Color.red, 1000f);
+                //if (prevNode != null)
+                //    Debug.DrawLine(prevNode.RealWorldPos, node.RealWorldPos, Color.magenta, 1000f);
+                prevNodeBackToStart = node;
+            }
+        }
     }
-    float GetAngleFromVector(Vector3 dir)
-    {
-        dir = dir.normalized;
-        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        if (n < 0) n += 360;
-        return n;
-    }
+
 }
+
+
+

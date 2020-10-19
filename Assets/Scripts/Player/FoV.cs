@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class FoV : MonoBehaviour
 {
@@ -73,14 +71,20 @@ public class FoV : MonoBehaviour
         if (isActive)
         {
             if (updateFoVCoroutine != null)
-                Debug.Log("корутина уже запущена, но так не должно быть");
+            {
+                //Debug.Log("корутина уже запущена, но так не должно быть");
+                //TODO:разобраться
+            }
             else
                 updateFoVCoroutine = StartCoroutine(UpdateFov());
         }
         else
         {
             if (updateFoVCoroutine == null)
-                Debug.Log("корутина уже остановлена, но так не должно быть");
+            {
+                //Debug.Log("корутина уже остановлена, но так не должно быть");
+                //TODO:разобраться
+            }
             else
             {
                 StopCoroutine(UpdateFov());
