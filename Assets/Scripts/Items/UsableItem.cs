@@ -1,9 +1,16 @@
-﻿public abstract class UsableItem : Item
+﻿using UnityEngine;
+
+public class UsableItem : Item, IUsableItem
 {
-    public bool ConsumedOnUse { get; private set; }
-    public UsableItem(UsableItemTemplate template) : base(template) 
+    public UsableItem(UsableItemTemplate template) : base(template) { }
+
+    public UsableItemTemplate UsableTemplate => Template as UsableItemTemplate;
+
+    public void Use()
     {
-        ConsumedOnUse = template.ConsumedOnUse;
+        if (UsableTemplate.ConsumedOnUse)
+            ChangeStackAmount(-1);
+        if (CurrentStacksAmount < 0)
+            Debug.Log("У айтема стало стаков меньше нуля");
     }
-    public abstract void Use();
 }

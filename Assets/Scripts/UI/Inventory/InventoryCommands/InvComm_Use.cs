@@ -4,11 +4,11 @@ public class InvComm_Use : InventoryCommand
 {
     public string CommandName => "Использовать";
     Inventory inventory;
-    UsableItem item;
-    public InvComm_Use(Inventory inventory, Item item)
+    Item Item;
+    public InvComm_Use(Inventory inventory, Item Item)
     {
         this.inventory = inventory;
-        this.item = (UsableItem)item;
+        this.Item = Item;
     }
 
     public bool CanBeExecuted()
@@ -18,12 +18,9 @@ public class InvComm_Use : InventoryCommand
 
     public void Execute()
     {
-        item.Use();
-        if (item.ConsumedOnUse)
-            item.ChangeAmount(-1);
-        if (item.StacksAmount < 0)
-            Debug.Log("У айтема стало стаков меньше нуля");
-        if (item.StacksAmount <= 0)
-            inventory.RemoveItem(item);
+        IUsableItem usableItem = Item as IUsableItem;
+        usableItem.Use();
+        if (Item.CurrentStacksAmount <= 0)
+            inventory.RemoveItem(Item);
     }
 }

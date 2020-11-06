@@ -39,7 +39,7 @@ public class Inv_ContextMenu : MonoBehaviour
         List<InventoryCommand> commands = new List<InventoryCommand>();
 
         commands.Add(new InvComm_Drop(inventory, item));
-        if (item is UsableItem)
+        if (item is IUsableItem)
             commands.Add(new InvComm_Use(inventory, item));
         return commands;
     }

@@ -10,8 +10,8 @@ public class ItemOnGround : MonoBehaviour, Interactable
     public Item Item => item;
     void Awake()
     {
-        item = template.CreateItemFromTemplate();
-        item.ChangeAmount(StacksAmount);
+        item = template.CreateInstance();
+        item.ChangeStackAmount(StacksAmount);
     }
     public void OnInteraction()
     {

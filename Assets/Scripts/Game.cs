@@ -21,7 +21,7 @@ public class Game : MonoBehaviour
             bottomLeftCorner = bottomLeftMapCorner.position,
             topRightCorner = topRightMapCorner.position,
             cellSize = nodeCreatorCellSize,
-            mask = nodeCreatorLayerMask
+            unwalkableLayers = nodeCreatorLayerMask
         };
         NodeCreator.Initialize(settings);
         GameObject playerGO = Instantiate(playerPrefab);

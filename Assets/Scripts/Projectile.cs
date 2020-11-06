@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
             RaycastHit2D[] result = new RaycastHit2D[10];
             if (collider.Cast(Vector2.zero, result) > 0 && result[0].collider.gameObject != caster)
             {
-                Debug.Log("Врезался в " + result[0].collider.gameObject.name);
+                //Debug.Log("Врезался в " + result[0].collider.gameObject.name);
                 Damageble damageble = result[0].collider.gameObject.GetComponent<Damageble>();
                 if (damageble != null)
                 {

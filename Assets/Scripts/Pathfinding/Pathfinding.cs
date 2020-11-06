@@ -6,6 +6,18 @@ public class Pathfinding
     Node[,] map;
     const int move_str_cost = 10;
     const int move_diag_cost = 14;
+    public static bool FindPath(Vector3 start, Vector3 end, out List<Node> path)
+    {
+        Pathfinding p = new Pathfinding();
+        path = p.FindPath(start, end);
+        if (path == null)
+        {
+            path = new List<Node>();
+            return false;
+        }
+        else
+            return true;
+    }
     public Pathfinding()
     {
         this.map = new Node[NodeCreator.Map.GetLength(0), NodeCreator.Map.GetLength(1)];
@@ -20,6 +32,8 @@ public class Pathfinding
         //позиции в map
         Vector2Int startNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(start);
         Vector2Int endNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(end);
+        Debug.Log($"startV:{start} endV: {end}");
+        Debug.Log($"startNode:{startNodeArrayPos} endNode: {endNodeArrayPos}");
 
         return FindPath(startNodeArrayPos, endNodeArrayPos);
     }

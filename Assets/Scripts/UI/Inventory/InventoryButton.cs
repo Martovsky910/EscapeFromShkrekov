@@ -14,7 +14,7 @@ public class InventoryButton : MonoBehaviour, IPointerClickHandler
 
     public void Initialize(Item item, Inventory inventory)
     {
-        GetComponent<Image>().sprite = item.ItemTemplate.Sprite;
+        GetComponent<Image>().sprite = item.Template.Sprite;
         this.item = item;
         this.inventory = inventory;
     }
@@ -28,7 +28,7 @@ public class InventoryButton : MonoBehaviour, IPointerClickHandler
     }
     void OnLMB()
     {
-        Debug.Log("Кликнул на " + item.ItemTemplate.ItemName);
+        Debug.Log("Кликнул на " + item.Template.ItemName);
 
     }
     void OnRBM()

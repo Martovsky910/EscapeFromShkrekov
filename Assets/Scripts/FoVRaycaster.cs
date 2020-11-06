@@ -10,8 +10,10 @@ public class FoVRaycaster
     float angleIncrease;
     GameObject self;
     LayerMask mask;
-    public FoVRaycaster(int rayCount, int fov, int viewDistance, GameObject self, LayerMask mask)
+    Transform owner;
+    public FoVRaycaster(Transform owner,int rayCount, int fov, int viewDistance, GameObject self, LayerMask mask)
     {
+        this.owner = owner;
         this.rayCount = rayCount;
         this.fov = fov;
         this.viewDistance = viewDistance;
@@ -19,15 +21,19 @@ public class FoVRaycaster
         this.mask = mask;
         angleIncrease = fov / rayCount;
     }
-    public bool Find(Transform from, GameObject target, bool showLines = false)
+    public bool FindPlayer(bool showLines = false)
     {
-        if (target == null || from == null)
+        return Find(Player.GO, showLines);
+    }
+    public bool Find(GameObject target, bool showLines = false)
+    {
+        if (target == null || owner == null)
             return false;
 
         bool result = false;
 
-        Vector3 origin = from.position;
-        float angle = SetAimDirection(-from.right);
+        Vector3 origin = owner.position;
+        float angle = SetAimDirection(-owner.right);
 
         for (int i = 0; i <= rayCount; i++)
         {

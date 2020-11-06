@@ -17,21 +17,21 @@ public class Inventory
     public bool AddItem(Item item)
     {
         bool result = false;
-        if (FilledSlots + item.ItemTemplate.AmountOfSlotsOccuoied < Size)
+        if (FilledSlots + item.Template.AmountOfSlotsOccuoied < Size)
         {
-            FilledSlots += item.ItemTemplate.AmountOfSlotsOccuoied;
+            FilledSlots += item.Template.AmountOfSlotsOccuoied;
             Items.Add(item);
             result = true;
             InventoryChanged?.Invoke();
-            Debug.Log("Добавил предмет в инвентарь " + item.ItemTemplate.ItemName);
+            Debug.Log("Добавил предмет в инвентарь " + item.Template.ItemName);
         }
         return result;
     }
     public void RemoveItem(Item item)
     {
         Items.Remove(item);
-        FilledSlots -= item.ItemTemplate.AmountOfSlotsOccuoied;
+        FilledSlots -= item.Template.AmountOfSlotsOccuoied;
         InventoryChanged?.Invoke();
-        Debug.Log("Убрал предмет из инвентаря " + item.ItemTemplate.ItemName);
+        Debug.Log("Убрал предмет из инвентаря " + item.Template.ItemName);
     }
 }
