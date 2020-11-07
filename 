@@ -1,0 +1,41 @@
+[33mcommit 8cc61b715c117f529ac2691af5a69ebf2ca02764[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Vladislav Barsukov <nicknameisthekey@gmail.com>
+Date:   Fri Nov 6 23:10:33 2020 +0300
+
+    inventory rework
+
+[33mcommit 2c9d34cfe76c540200ca0d1efb5f7c7e9cadd9ce[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Vladislav Barsukov <nicknameisthekey@gmail.com>
+Date:   Mon Oct 19 14:11:43 2020 +0300
+
+    added enemy movement
+
+[33mcommit c069868469a09df755b385bf2e4da902ba40db39[m
+Author: Vladislav Barsukov <nicknameisthekey@gmail.com>
+Date:   Fri Oct 16 17:24:50 2020 +0300
+
+    added pathfinding
+
+[33mcommit 75e5c10ab2f5bb793e74b1551c92a71769125f7b[m
+Author: Vladislav Barsukov <nicknameisthekey@gmail.com>
+Date:   Sun Oct 11 10:32:46 2020 +0300
+
+    render sorting rework, game preset added
+
+[33mcommit 534a03007ca0496347015af506380a5f79589119[m
+Author: Vladislav <nicknameisthekey@gmail.com>
+Date:   Fri Oct 2 07:24:33 2020 +0300
+
+    some work done
+
+[33mcommit 2c843c360961141cd0a22fdc411b71d346398658[m
+Author: Vladislav <nicknameisthekey@gmail.com>
+Date:   Tue Sep 29 02:03:49 2020 +0300
+
+    changed gitignore
+
+[33mcommit fbc615eeba6d95effdec82af62336513463cd39a[m
+Author: Vladislav <nicknameisthekey@gmail.com>
+Date:   Tue Sep 29 01:59:49 2020 +0300
+
+    Add .gitignore and .gitattributes.

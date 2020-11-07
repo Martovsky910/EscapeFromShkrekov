@@ -32,8 +32,8 @@ public class Pathfinding
         //позиции в map
         Vector2Int startNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(start);
         Vector2Int endNodeArrayPos = NodeCreator.GetArrayPosByWorldPos(end);
-        Debug.Log($"startV:{start} endV: {end}");
-        Debug.Log($"startNode:{startNodeArrayPos} endNode: {endNodeArrayPos}");
+        //Debug.Log($"startV:{start} endV: {end}");
+       // Debug.Log($"startNode:{startNodeArrayPos} endNode: {endNodeArrayPos}");
 
         return FindPath(startNodeArrayPos, endNodeArrayPos);
     }

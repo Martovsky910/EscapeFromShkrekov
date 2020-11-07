@@ -41,6 +41,9 @@ public class Inv_ContextMenu : MonoBehaviour
         commands.Add(new InvComm_Drop(inventory, item));
         if (item is IUsableItem)
             commands.Add(new InvComm_Use(inventory, item));
+        if (item is IEqipable)
+            commands.Add(new InvComm_Equip(inventory, item));
+
         return commands;
     }
 }

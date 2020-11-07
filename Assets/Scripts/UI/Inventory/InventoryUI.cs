@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField]
     GameObject buttonPrefab;
     List<GameObject> buttons = new List<GameObject>();
-    void Awake()
+    public void Initialize()
     {
         ItemsOnPlayer.PlayerInventory.InventoryChanged += OnInventoryChanged;
         Input.InventoryModeChangedTo += OnInventoryOpenClose;
+        OnInventoryChanged();
         gameObject.SetActive(false);
     }
     void OnInventoryOpenClose(bool status)

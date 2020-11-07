@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f0d706a088f0c4d8ddc6d730a9500a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enablePathDebug: 1
+  enablePathDebug: 0
   pathVisibleDuration: 100
   pathColor: {r: 0, g: 0, b: 0, a: 1}
   waypointVisibleDuration: 100
@@ -4754,6 +4754,22 @@ MonoBehaviour:
     m_Bits: 256
   from: {fileID: 0}
   to: {fileID: 0}
+  startingWeapon: {fileID: 11400000, guid: 1eea8031b22a4684b969a8590fec6032, type: 2}
+  startingInventory:
+  - {fileID: 11400000, guid: b2e1b2792e254f945bc74a119d0622a7, type: 2}
+  inventoryUI: {fileID: 1549270789}
+  equipmentUI: {fileID: 566182461}
+--- !u!114 &566182461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4728536837017450445, guid: 42abc880f08ac284488b00cfcbca1f88, type: 3}
+  m_PrefabInstance: {fileID: 414590588788231917}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba3e9d1b745930419bf5d7b22be279d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &674964316
 GameObject:
   m_ObjectHideFlags: 0
@@ -5005,6 +5021,17 @@ Transform:
   m_Father: {fileID: 44505823}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549270789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7425031598328425310, guid: 42abc880f08ac284488b00cfcbca1f88, type: 3}
+  m_PrefabInstance: {fileID: 414590588788231917}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a0fc1fe0d383243b2da0384e759135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1626080842
 GameObject:
   m_ObjectHideFlags: 0

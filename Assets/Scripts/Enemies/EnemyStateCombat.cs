@@ -41,7 +41,7 @@ public class EnemyStateCombat : EnemyState
     void Shoot()
     {
         if (cooldownLeft > 0) return;
-        Debug.Log("Pew!");
+        //Debug.Log("Pew!");
         Debug.DrawLine(owner.transform.position, Player.PlayerPosition, Color.blue, 0.5f);
         var projGO = GameObject.Instantiate(owner.projectile.gameObject, owner.transform.position, owner.transform.rotation);
         projGO.GetComponent<Projectile>().Initialize(owner.projectileSpeed, owner.gameObject, new HitData(25));
